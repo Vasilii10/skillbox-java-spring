@@ -75,4 +75,14 @@ public class BookService {
 			return false;
 		}
 	}
+
+	/*Default method for all configuration*/
+	private void defaultInit() {
+		log.info("defaultInit " + getClass().getSimpleName());
+	}
+
+	/*Default method for all configuration*/
+	private void defaultDestroy() {
+		log.info("defaultDestroy " + getClass().getSimpleName());
+	}
 }

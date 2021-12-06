@@ -84,4 +84,14 @@ public class BookRepository implements ProjectRepository<Book> , ApplicationCont
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.context = applicationContext;
 	}
+
+	/*Default method for all configuration*/
+	private void defaultInit() {
+		log.info("defaultInit " + getClass().getSimpleName());
+	}
+
+	/*Default method for all configuration*/
+	private void defaultDestroy() {
+		log.info("defaultDestroy " + getClass().getSimpleName());
+	}
 }
