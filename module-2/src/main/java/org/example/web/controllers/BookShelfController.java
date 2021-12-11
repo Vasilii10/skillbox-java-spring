@@ -30,6 +30,7 @@ public class BookShelfController {
 	public String books(Model model) {
 		log.info(this.toString());
 		model.addAttribute("book", new Book());
+		model.addAttribute("bookIdToRemove", new BookIdToRemove());
 		model.addAttribute("bookList", bookService.getAllBooks());
 
 		return "book_shelf";
@@ -49,8 +50,8 @@ public class BookShelfController {
 	}
 
 	@PostMapping("/remove")
-	public String removeBook(@RequestParam(value = "bookIdToRemove") String bookIdToRemove) {
-		if (bookService.removeBookById(bookIdToRemove)) {
+	public String removeBook(BookIdToRemove bookIdToRemove) {
+		if (bookService.removeBookById(bookIdToRemove.getId())) {
 			log.info("Book with id {" + bookIdToRemove + "} successfully deleted");
 
 			return "redirect:/books/shelf";
