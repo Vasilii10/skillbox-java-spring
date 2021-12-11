@@ -28,13 +28,22 @@ public class LoginController {
 	}
 
 	@PostMapping("/auth")
-	public String authenticate(LoginForm loginFrom) {
+	public String authenticate(LoginForm loginFrom) throws BookShelfLoginException {
 		if (loginService.authenticate(loginFrom)) {
 			log.info("login OK redirect to book shelf");
 			return "redirect:/books/shelf";
 		} else {
 			log.info("login FAIL redirect back to login");
-			return "redirect:/login";
+			throw new BookShelfLoginException("Invalid user credentials");
 		}
 	}
+
+	@ExceptionHandler(BookShelfLoginException.class)
+	public String handleError(Model modelAndView, Exception e) {
+
+		modelAndView.addAttribute("errorMessage", e.getMessage());
+
+		return "errors/404";
+	}
+
 }
