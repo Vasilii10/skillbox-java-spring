@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @Controller
 @RequestMapping(value = "/books")
-//@Scope("request")
-//@Scope("session")
 @Scope("singleton")
 public class BookShelfController {
 
@@ -37,26 +38,40 @@ public class BookShelfController {
 	}
 
 	@PostMapping("/save")
-	public String saveBook(Book book) {
-		if (bookService.saveBook(book)) {
-			log.info("current repository size: " + bookService.getAllBooks().size());
+	public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			log.warn("Book field 'size' contains invalid data!");
 
-			return "redirect:/books/shelf";
+			model.addAttribute("book", book);
+			model.addAttribute("bookIdToRemove", new BookIdToRemove());
+			model.addAttribute("bookList", bookService.getAllBooks());
+
+			return "book_shelf";
 		} else {
-			log.warn("Attempt to save empty book");
-
+			if (bookService.saveBook(book)) {
+				log.info("current repository size: " + bookService.getAllBooks().size());
+			} else {
+				log.warn("Attempt to save empty book");
+			}
 			return "redirect:/books/shelf";
 		}
 	}
 
 	@PostMapping("/remove")
-	public String removeBook(BookIdToRemove bookIdToRemove) {
-		if (bookService.removeBookById(bookIdToRemove.getId())) {
-			log.info("Book with id {" + bookIdToRemove + "} successfully deleted");
+	public String removeBook(@Valid BookIdToRemove bookIdToRemove, BindingResult bindingResult, Model model) {
 
-			return "redirect:/books/shelf";
+		if (bindingResult.hasErrors()) {
+			log.warn("BookIdToRemove contains invalid data!");
+			model.addAttribute("book", new Book());
+			model.addAttribute("bookList", bookService.getAllBooks());
+
+			return "book_shelf";
 		} else {
-			log.warn("Book with id {" + bookIdToRemove + "} was not deleted");
+			if (bookService.removeBookById(bookIdToRemove.getId())) {
+				log.info("Book with id {" + bookIdToRemove + "} successfully deleted");
+			} else {
+				log.warn("Book with id {" + bookIdToRemove + "} was not deleted");
+			}
 
 			return "redirect:/books/shelf";
 		}

@@ -41,7 +41,8 @@
 					<input type="text" placeholder="book_title" th:field="*{title}">
 				</td>
 				<td>
-					<input type="number" placeholder="size (pages)" th:field="*{size}">
+					<input type="text" placeholder="size (pages)" th:field="*{size}">
+					<p th:if="${#fields.hasErrors()}">Field value must be digit and less than 4 signs</p>
 				</td>
 				<td>
 					<input type="submit" value="save">
@@ -58,6 +59,9 @@
 				</td>
 				<td>
 					<input type="submit" value="remove">
+				</td>
+				<td th:if="${#fields.hasErrors()}">
+					<p>Id not found</p>
 				</td>
 			</tr>
 		</table>
