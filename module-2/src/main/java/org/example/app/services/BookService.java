@@ -13,10 +13,10 @@ import java.util.regex.*;
 public class BookService {
 
 	private final Logger log = Logger.getLogger(BookShelfController.class);
-	private final ProjectRepository<Book> bookRepo;
+	private final BookRepository<Book> bookRepo;
 
 	@Autowired
-	public BookService(ProjectRepository<Book> bookRepo) {
+	public BookService(BookRepository<Book> bookRepo) {
 		this.bookRepo = bookRepo;
 	}
 
@@ -40,7 +40,7 @@ public class BookService {
 		return !book.getAuthor().isEmpty() || book.getSize() != null || !book.getTitle().isEmpty();
 	}
 
-	public boolean removeBookById(String bookIdToRemove) {
+	public boolean removeBookById(Integer bookIdToRemove) {
 		return bookRepo.removeItemById(bookIdToRemove);
 	}
 

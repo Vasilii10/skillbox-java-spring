@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS books;
 
-CREATE TABLE book(
+CREATE TABLE book
+(
     id_book INT AUTO_INCREMENT PRIMARY KEY,
-    author VARCHAR(250) NOT NULL,
-    title VARCHAR(250) NOT NULL,
-    size INT DEFAULT NULL
-)
+    author  VARCHAR(250) NOT NULL,
+    title   VARCHAR(250) NOT NULL,
+    size    INT DEFAULT NULL
+);

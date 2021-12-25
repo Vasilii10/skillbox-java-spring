@@ -12,8 +12,8 @@ public class IdProvider implements InitializingBean, DisposableBean, BeanPostPro
 
 	private final Logger log = Logger.getLogger(IdProvider.class);
 
-	public String provideId(Book book) {
-		return this.hashCode() + "_" + book.hashCode();
+	public Integer provideId(Book book) {
+		return this.hashCode() + book.hashCode();
 	}
 
 	/*Specific method for idProvider Bean*/

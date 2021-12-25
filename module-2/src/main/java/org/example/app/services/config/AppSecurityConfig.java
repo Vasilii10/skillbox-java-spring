@@ -1,6 +1,5 @@
 package org.example.app.services.config;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.*;
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-	private final Logger log = Logger.getLogger(AppSecurityConfig.class);
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -23,7 +21,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	PasswordEncoder passwordEncoder(){
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(10);
 	}
 

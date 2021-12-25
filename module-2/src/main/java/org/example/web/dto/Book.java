@@ -6,7 +6,7 @@ import javax.validation.constraints.Digits;
 
 @Data
 public class Book {
-	private String id;
+	private Integer id;
 	private String author;
 	private String title;
 

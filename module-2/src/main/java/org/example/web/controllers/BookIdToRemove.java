@@ -2,13 +2,13 @@ package org.example.web.controllers;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 
 @Data
 public class BookIdToRemove {
 
 	/* Valid if id is not null*/
-	@NotEmpty
-	private String id;
+	@NotNull
+	private Integer id;
 }
