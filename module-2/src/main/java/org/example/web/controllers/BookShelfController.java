@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Scope("singleton")
 public class BookShelfController {
 
-	private final Logger log = Logger.getLogger(BookShelfController.class);
+	private final Logger LOG = Logger.getLogger(BookShelfController.class);
 	private final BookService bookService;
 
 	@Autowired
@@ -29,7 +29,7 @@ public class BookShelfController {
 
 	@GetMapping("/shelf")
 	public String books(Model model) {
-		log.info(this.toString());
+		LOG.info(this.toString());
 		model.addAttribute("book", new Book());
 		model.addAttribute("bookIdToRemove", new BookIdToRemove());
 		model.addAttribute("bookList", bookService.getAllBooks());
@@ -40,7 +40,7 @@ public class BookShelfController {
 	@PostMapping("/save")
 	public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
-			log.warn("Book field 'size' contains invalid data!");
+			LOG.warn("Book field 'size' contains invalid data!");
 
 			model.addAttribute("book", book);
 			model.addAttribute("bookIdToRemove", new BookIdToRemove());
@@ -49,9 +49,9 @@ public class BookShelfController {
 			return "book_shelf";
 		} else {
 			if (bookService.saveBook(book)) {
-				log.info("current repository size: " + bookService.getAllBooks().size());
+				LOG.info("current repository size: " + bookService.getAllBooks().size());
 			} else {
-				log.warn("Attempt to save empty book");
+				LOG.warn("Attempt to save empty book");
 			}
 			return "redirect:/books/shelf";
 		}
@@ -61,16 +61,16 @@ public class BookShelfController {
 	public String removeBook(@Valid BookIdToRemove bookIdToRemove, BindingResult bindingResult, Model model) {
 
 		if (bindingResult.hasErrors()) {
-			log.warn("BookIdToRemove contains invalid data!");
+			LOG.warn("BookIdToRemove contains invalid data!");
 			model.addAttribute("book", new Book());
 			model.addAttribute("bookList", bookService.getAllBooks());
 
 			return "book_shelf";
 		} else {
 			if (bookService.removeBookById(bookIdToRemove.getId())) {
-				log.info("Book with id {" + bookIdToRemove + "} successfully deleted");
+				LOG.info("Book with id {" + bookIdToRemove + "} successfully deleted");
 			} else {
-				log.warn("Book with id {" + bookIdToRemove + "} was not deleted");
+				LOG.warn("Book with id {" + bookIdToRemove + "} was not deleted");
 			}
 
 			return "redirect:/books/shelf";
@@ -80,11 +80,11 @@ public class BookShelfController {
 	@PostMapping("/removeByRegex")
 	public String removeBookByRegex(@RequestParam("userRegex") String userRegex) {
 		if (bookService.removeBookByRegex(userRegex)) {
-			log.info("Executing deletion by user's regex: " + userRegex);
+			LOG.info("Executing deletion by user's regex: " + userRegex);
 
 			return "redirect:/books/shelf";
 		} else {
-			log.error("Error during deletion by regex");
+			LOG.error("Error during deletion by regex");
 
 			return "redirect:/books/shelf";
 		}

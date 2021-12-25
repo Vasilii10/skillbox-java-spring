@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/login")
 public class LoginController {
 
-	private final Logger log = Logger.getLogger(BookShelfController.class);
+	private final Logger LOG = Logger.getLogger(LoginController.class);
 	private final LoginService loginService;
 
 	@Autowired
@@ -22,7 +22,7 @@ public class LoginController {
 
 	@GetMapping
 	public String login(Model model) {
-		log.info("GET /login returns login_page.html");
+		LOG.info("GET /login returns login_page.html");
 		model.addAttribute("loginForm", new LoginForm());
 		return "login_page";
 	}
@@ -30,10 +30,10 @@ public class LoginController {
 	@PostMapping("/auth")
 	public String authenticate(LoginForm loginFrom) {
 		if (loginService.authenticate(loginFrom)) {
-			log.info("login OK redirect to book shelf");
+			LOG.info("login OK redirect to book shelf");
 			return "redirect:/books/shelf";
 		} else {
-			log.info("login FAIL redirect back to login");
+			LOG.info("login FAIL redirect back to login");
 			return "redirect:/login";
 		}
 	}

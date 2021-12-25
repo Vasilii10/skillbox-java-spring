@@ -1,7 +1,6 @@
 package org.example.app.services;
 
 import org.apache.log4j.Logger;
-import org.example.web.controllers.BookShelfController;
 import org.example.web.dto.Book;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.*;
 @Repository
 public class BookRepositoryImpl implements BookRepository<Book>, ApplicationContextAware {
 
-	private static final Logger LOG = Logger.getLogger(BookShelfController.class);
+	private static final Logger LOG = Logger.getLogger(BookRepositoryImpl.class);
 	private ApplicationContext context;
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;

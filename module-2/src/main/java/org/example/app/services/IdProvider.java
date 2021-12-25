@@ -10,7 +10,7 @@ import javax.annotation.*;
 
 public class IdProvider implements InitializingBean, DisposableBean, BeanPostProcessor {
 
-	private final Logger log = Logger.getLogger(IdProvider.class);
+	private final Logger LOG = Logger.getLogger(IdProvider.class);
 
 	public Integer provideId(Book book) {
 		return this.hashCode() + book.hashCode();
@@ -18,58 +18,58 @@ public class IdProvider implements InitializingBean, DisposableBean, BeanPostPro
 
 	/*Specific method for idProvider Bean*/
 	private void destroyIdProvider() {
-		log.info("destroyIdProvider");
+		LOG.info("destroyIdProvider");
 	}
 
 	/*Specific method for idProvider Bean*/
 	private void initIdProvider() {
-		log.info("initIdProvider");
+		LOG.info("initIdProvider");
 	}
 
 	/*Default method for all configuration*/
 	private void defaultInit() {
-		log.info("defaultInit " + getClass().getSimpleName());
+		LOG.info("defaultInit " + getClass().getSimpleName());
 	}
 
 	/*Default method for all configuration*/
 	private void defaultDestroy() {
-		log.info("defaultDestroy " + getClass().getSimpleName());
+		LOG.info("defaultDestroy " + getClass().getSimpleName());
 	}
 
 	/*Implements InitializingBean*/
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		log.info("afterPropertiesSet");
+		LOG.info("afterPropertiesSet");
 	}
 
 	/*Implements DisposableBean*/
 	@Override
 	public void destroy() throws Exception {
-		log.info("destroy");
+		LOG.info("destroy");
 	}
 
 	/*Override default methods from BeanPostProcessor*/
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		log.info("postProcessBeforeInitialization invoked by bean" + beanName);
+		LOG.info("postProcessBeforeInitialization invoked by bean" + beanName);
 		return null;
 	}
 
 	/*Override default methods from BeanPostProcessor*/
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		log.info("postProcessAfterInitialization invoked by bean" + beanName);
+		LOG.info("postProcessAfterInitialization invoked by bean" + beanName);
 		return null;
 	}
 
 	@PostConstruct
 	public void postConstructProvider() {
-		log.info("postConstructProvider");
+		LOG.info("postConstructProvider");
 	}
 
 	@PreDestroy
 	public void preDestroyProvider() {
-		log.info("preDestroyProvider");
+		LOG.info("preDestroyProvider");
 	}
 
 }
