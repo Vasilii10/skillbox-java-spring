@@ -1,6 +1,7 @@
 package org.example.config;
 
 import org.springframework.context.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -37,7 +38,7 @@ public class WebContextConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public ThymeleafViewResolver viewResolver(){
+	public ThymeleafViewResolver viewResolver() {
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 
 		viewResolver.setTemplateEngine(templateEngine());
@@ -46,4 +47,13 @@ public class WebContextConfig implements WebMvcConfigurer {
 		return viewResolver;
 	}
 	/* End Thymeleaf config*/
+
+	@Bean(name = "multipartResolver")
+	public CommonsMultipartResolver commonsMultipartResolver() {
+		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+		resolver.setMaxUploadSize(500000);
+
+		return resolver;
+	}
+
 }

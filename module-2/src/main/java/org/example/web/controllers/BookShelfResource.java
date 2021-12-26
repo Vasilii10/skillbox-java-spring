@@ -10,20 +10,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.*;
 
 
 @Controller
 @RequestMapping(value = "/books")
 @Scope("singleton")
-public class BookShelfController {
+public class BookShelfResource {
 
-	private final Logger LOG = Logger.getLogger(BookShelfController.class);
+	private final Logger LOG = Logger.getLogger(BookShelfResource.class);
 	private final BookService bookService;
 
 	@Autowired
-	public BookShelfController(BookService bookService) {
+	public BookShelfResource(BookService bookService) {
 		this.bookService = bookService;
 	}
 
@@ -89,4 +91,33 @@ public class BookShelfController {
 			return "redirect:/books/shelf";
 		}
 	}
+
+	@PostMapping("/upload")
+	public String upload(@RequestParam("file") MultipartFile file) {
+		String fileName = file.getOriginalFilename();
+		File fileUploadsDir = getDirectoryForFileUploads();
+
+		File serverFile = new File(fileUploadsDir + "/" + fileName);
+
+		try (FileOutputStream fos = new FileOutputStream(serverFile)) {
+			fos.write(file.getBytes());
+
+			LOG.info("Uploaded file { " + fileName + "} saved successfully");
+		} catch (Exception e) {
+			LOG.error("Error during saving file on server");
+		}
+
+		return "redirect:/books/shelf";
+	}
+
+	private File getDirectoryForFileUploads() {
+		String serverRootPath = System.getProperty("catalina.home");
+		File directory = new File(serverRootPath + File.separator + "external_uploads");
+		if (!directory.exists()) {
+			directory.mkdirs();
+		}
+
+		return directory;
+	}
+
 }
