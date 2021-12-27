@@ -42,6 +42,8 @@ public class BookShelfResource {
 	@PostMapping("/save")
 	public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+
+			LOG.warn("Ошибка" + bindingResult.getAllErrors());
 			LOG.warn("Book field 'size' contains invalid data!");
 
 			model.addAttribute("book", book);
