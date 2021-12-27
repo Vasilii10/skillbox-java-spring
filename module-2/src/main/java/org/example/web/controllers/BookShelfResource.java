@@ -83,7 +83,9 @@ public class BookShelfResource {
 	}
 
 	@PostMapping("/removeByRegex")
-	public String removeBookByRegex(@RequestParam("userRegex") String userRegex) {
+	public String removeBookByRegex(@RequestParam("userRegex") String userRegex) throws RegexInvalidException {
+		validateRegex(userRegex);
+
 		if (bookService.removeBookByRegex(userRegex)) {
 			LOG.info("Executing deletion by user's regex: " + userRegex);
 
@@ -92,6 +94,12 @@ public class BookShelfResource {
 			LOG.error("Error during deletion by regex");
 
 			return "redirect:/books/shelf";
+		}
+	}
+
+	private void validateRegex(String regex) throws RegexInvalidException {
+		if (!(regex.contains("author=") || regex.contains("size=") || regex.contains("title="))) {
+			throw new RegexInvalidException();
 		}
 	}
 

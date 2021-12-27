@@ -29,7 +29,7 @@ public class ErrorController {
 		return "errors/404";
 	}
 
-	@ExceptionHandler(FileUploadException.class)
+	@ExceptionHandler({FileUploadException.class, RegexInvalidException.class})
 	public String handleFileForUploadNotFoundError(Model modelAndView, Exception e) {
 		modelAndView.addAttribute("errorMessage", e.getMessage());
 

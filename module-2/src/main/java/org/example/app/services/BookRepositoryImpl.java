@@ -15,9 +15,8 @@ import java.util.*;
 public class BookRepositoryImpl implements BookRepository<Book>, ApplicationContextAware {
 
 	private static final Logger LOG = Logger.getLogger(BookRepositoryImpl.class);
-	private ApplicationContext context;
-
 	private final NamedParameterJdbcTemplate jdbcTemplate;
+	private ApplicationContext context;
 
 	@Autowired
 	public BookRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -70,11 +69,18 @@ public class BookRepositoryImpl implements BookRepository<Book>, ApplicationCont
 
 	@Override
 	public boolean removeItemsByAuthor(String author) {
+		MapSqlParameterSource source = new MapSqlParameterSource();
+		source.addValue("author", author);
 		boolean result = false;
 		for (Book book : retrieveAll()) {
 			if (book.getAuthor().equals(author)) {
-				LOG.info("remove book { " + book + " } completed");
-				// TODO: 25/12/2021
+
+				if (jdbcTemplate.update("DELETE FROM book WHERE author = :author", source) == 1) {
+					LOG.info("remove book with author " + author + " completed");
+					result = true;
+				} else {
+					result = false;
+				}
 			}
 		}
 		return result;
@@ -82,12 +88,19 @@ public class BookRepositoryImpl implements BookRepository<Book>, ApplicationCont
 
 	@Override
 	public boolean removeItemsByTitle(String title) {
+
+		MapSqlParameterSource source = new MapSqlParameterSource();
+		source.addValue("title", title);
 		boolean result = false;
 
 		for (Book book : retrieveAll()) {
 			if (book.getTitle().equals(title)) {
-				LOG.info("remove book { " + book + " } completed");
-				// TODO: 25/12/2021
+				if (jdbcTemplate.update("DELETE FROM book WHERE title = :title", source) == 1) {
+					LOG.info("remove book with title \"" + title + "\" completed");
+					result = true;
+				} else {
+					result = false;
+				}
 			}
 		}
 		return result;
@@ -95,12 +108,20 @@ public class BookRepositoryImpl implements BookRepository<Book>, ApplicationCont
 
 	@Override
 	public boolean removeItemsBySize(String size) {
+
+		MapSqlParameterSource source = new MapSqlParameterSource();
+		source.addValue("size", size);
 		boolean result = false;
 
 		for (Book book : retrieveAll()) {
 			if (book.getSize() == Integer.parseInt(size)) {
-				LOG.info("remove book { " + book + " } completed");
-				// TODO: 25/12/2021
+
+				if (jdbcTemplate.update("DELETE FROM book WHERE size = :size", source) == 1) {
+					LOG.info("remove book with size " + size + " completed");
+					result = true;
+				} else {
+					result = false;
+				}
 			}
 		}
 
