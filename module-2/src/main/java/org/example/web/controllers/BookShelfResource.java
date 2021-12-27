@@ -1,6 +1,7 @@
 package org.example.web.controllers;
 
 
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
@@ -95,21 +96,27 @@ public class BookShelfResource {
 	}
 
 	@PostMapping("/upload")
-	public String upload(@RequestParam("file") MultipartFile file) {
-		String fileName = file.getOriginalFilename();
-		File fileUploadsDir = getDirectoryForFileUploads();
+	public String upload(@RequestParam("file") MultipartFile file) throws FileUploadException {
+		if (!file.isEmpty()) {
+			String fileName = file.getOriginalFilename();
+			File fileUploadsDir = getDirectoryForFileUploads();
 
-		File serverFile = new File(fileUploadsDir + "/" + fileName);
+			File serverFile = new File(fileUploadsDir + "/" + fileName);
 
-		try (FileOutputStream fos = new FileOutputStream(serverFile)) {
-			fos.write(file.getBytes());
+			try (FileOutputStream fos = new FileOutputStream(serverFile)) {
+				fos.write(file.getBytes());
 
-			LOG.info("Uploaded file { " + fileName + "} saved successfully");
-		} catch (Exception e) {
-			LOG.error("Error during saving file on server");
+				LOG.info("Uploaded file { " + fileName + "} saved successfully");
+			} catch (Exception e) {
+				LOG.error("Error during saving file on server");
+			}
+
+			return "redirect:/books/shelf";
+		} else {
+			LOG.error("File to upload has not chosen");
+			throw new FileUploadException();
 		}
 
-		return "redirect:/books/shelf";
 	}
 
 	private File getDirectoryForFileUploads() {
