@@ -1,3 +1,2 @@
-/target/
-/simple_mvc.iml
-/.idea/
+*.iml
+target
