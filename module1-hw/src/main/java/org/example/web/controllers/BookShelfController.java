@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/books")
 public class BookShelfController {
 
-	private final Logger log = Logger.getLogger(BookShelfController.class);
+	private final Logger LOG = Logger.getLogger(BookShelfController.class);
 	private final BookService bookService;
 
 	@Autowired
@@ -24,7 +24,7 @@ public class BookShelfController {
 
 	@GetMapping("/shelf")
 	public String books(Model model) {
-		log.info("got book shelf");
+		LOG.info("got book shelf");
 		model.addAttribute("book", new Book());
 		model.addAttribute("bookList", bookService.getAllBooks());
 
@@ -34,11 +34,11 @@ public class BookShelfController {
 	@PostMapping("/save")
 	public String saveBook(Book book) {
 		if (bookService.saveBook(book)) {
-			log.info("current repository size: " + bookService.getAllBooks().size());
+			LOG.info("current repository size: " + bookService.getAllBooks().size());
 
 			return "redirect:/books/shelf";
 		} else {
-			log.warn("Attempt to save empty book");
+			LOG.warn("Attempt to save empty book");
 
 			return "redirect:/books/shelf";
 		}
@@ -47,11 +47,11 @@ public class BookShelfController {
 	@PostMapping("/remove")
 	public String removeBook(@RequestParam(value = "bookIdToRemove") Integer bookIdToRemove) {
 		if (bookService.removeBookById(bookIdToRemove)) {
-			log.info("Book with id {" + bookIdToRemove + "} successfully deleted");
+			LOG.info("Book with id {" + bookIdToRemove + "} successfully deleted");
 
 			return "redirect:/books/shelf";
 		} else {
-			log.warn("Book with id {" + bookIdToRemove + "} was not deleted");
+			LOG.warn("Book with id {" + bookIdToRemove + "} was not deleted");
 
 			return "redirect:/books/shelf";
 		}
@@ -60,11 +60,11 @@ public class BookShelfController {
 	@PostMapping("/removeByRegex")
 	public String removeBookByRegex(@RequestParam("userRegex") String userRegex) {
 		if (bookService.removeBookByRegex(userRegex)) {
-			log.info("Executing deletion by user's regex: " + userRegex);
+			LOG.info("Executing deletion by user's regex: " + userRegex);
 
 			return "redirect:/books/shelf";
 		} else {
-			log.error("Error during deletion by regex");
+			LOG.error("Error during deletion by regex");
 
 			return "redirect:/books/shelf";
 		}

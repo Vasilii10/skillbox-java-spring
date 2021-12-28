@@ -12,10 +12,10 @@ import java.util.regex.*;
 public class BookService {
 
 	private final Logger LOG = Logger.getLogger(BookService.class);
-	private final ProjectRepository<Book> bookRepo;
+	private final BookRepository<Book> bookRepo;
 
 	@Autowired
-	public BookService(ProjectRepository<Book> bookRepo) {
+	public BookService(BookRepository<Book> bookRepo) {
 		this.bookRepo = bookRepo;
 	}
 
@@ -73,5 +73,15 @@ public class BookService {
 
 			return false;
 		}
+	}
+
+	/*Default method for all configuration*/
+	private void defaultInit() {
+		LOG.info("defaultInit " + getClass().getSimpleName());
+	}
+
+	/*Default method for all configuration*/
+	private void defaultDestroy() {
+		LOG.info("defaultDestroy " + getClass().getSimpleName());
 	}
 }
